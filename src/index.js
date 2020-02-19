@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000
 const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath))
+app.use(express.json())
 
 global.status = "OFF"
 
@@ -39,17 +40,26 @@ io.on('connection', (socket) => {
     })
 })
 
+app.post('/change_state', (req, res) => {
+    if (req.body.queryResult.parameters['on']) {
+        global.status = "ON"
+        io.emit('status', global.status)
 
-app.get('/turn_on', function (req, res) {
-    global.status = "ON"
-    io.emit('status', global.status)
-    res.send('Light turned ON')
-})
-
-app.get('/turn_off', function (req, res) {
-    global.status = "OFF"
-    io.emit('status', global.status)
-    res.send('Light turned OFF')
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            "speech": "Light Turn On!!!",
+            "displayText": "Light Turn On"
+        }));
+    } else {
+        global.status = "OFF"
+        io.emit('status', global.status)
+        
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            "speech": "Light Turn Off!!!",
+            "displayText": "Light Turn Off"
+        }));
+    }
 })
 
 server.listen(port, () => {
