@@ -1,40 +1,29 @@
-
 #include <SocketIoClient.h>
 
 const char* ssid     = "2Hats Logic Solutions";
 const char* password = "2H@tslogic";
 
-/// Socket.IO Settings ///
-char host[] = "192.168.1.9"; // Socket.IO Server Address
-int port = 3000; // Socket.IO Port Address
-char path[] = "/socket.io/?transport=websocket"; // Socket.IO Base Path
+char host[] = "192.168.1.9";
+int port = 3000;
+char path[] = "/socket.io/?transport=websocket";
 
 int LEDPin = 16;
-
+int BULBPin = 5;
 
 SocketIoClient webSocket;
-
-//bool LEDState = false;
 
 void current_status(const char * payload, size_t length) {
   String onState = String(payload);
   Serial.print("Current Status: ");
+  Serial.println(payload);
   if (onState.equals("ON")) {
-    Serial.println(onState);
-    digitalWrite(LEDPin, HIGH);
+    digitalWrite(BULBPin, HIGH);
   } else {
-    Serial.println(payload);
-    digitalWrite(LEDPin, LOW);
+    digitalWrite(BULBPin, LOW);
   }
 }
 
-
-void setup() {
-  Serial.begin(115200);
-  delay(10);
-
-  pinMode(LEDPin, OUTPUT);
-
+void setUpWifiConnection() {
   Serial.println();
   Serial.println();
   Serial.print("Connecting to ");
@@ -50,7 +39,16 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+}
 
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  pinMode(LEDPin, OUTPUT);
+  pinMode(BULBPin, OUTPUT);
+
+  setUpWifiConnection();
 
   webSocket.on("status", current_status);
   webSocket.begin(host, port, path);
