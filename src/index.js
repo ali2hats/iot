@@ -16,7 +16,7 @@ app.use(express.json())
 global.status = "OFF"
 
 io.on('connection', (socket) => {
-    console.log('New WebSocket connection')
+    console.log('New WebSocket connection Port :' + port)
     socket.emit('message', 'Welcome!')
     socket.emit('status', global.status)
     socket.broadcast.emit('message', 'A new user has joined!')
