@@ -41,6 +41,7 @@ io.on('connection', (socket) => {
 })
 
 app.post('/change_state', (req, res) => {
+    console.log(req.body)
     if (req.body.queryResult.parameters['on']) {
         global.status = "ON"
         io.emit('status', global.status)
@@ -53,7 +54,7 @@ app.post('/change_state', (req, res) => {
     } else {
         global.status = "OFF"
         io.emit('status', global.status)
-        
+
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
             "speech": "Light Turn Off!!!",

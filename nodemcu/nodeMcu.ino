@@ -3,8 +3,8 @@
 const char* ssid     = "2Hats Logic Solutions";
 const char* password = "2H@tslogic";
 
-char host[] = "192.168.1.9";
-int port = 3000;
+char host[] = "ali2hats-iot-app.herokuapp.com";
+int port = 80;
 char path[] = "/socket.io/?transport=websocket";
 
 int LEDPin = 16;
