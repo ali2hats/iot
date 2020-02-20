@@ -16,7 +16,7 @@ app.use(express.json())
 global.status = "OFF"
 
 io.on('connection', (socket) => {
-    console.log('New WebSocket connection Port :' + port)
+    console.log('New WebSocket connection')
     socket.emit('message', 'Welcome!')
     socket.emit('status', global.status)
     socket.broadcast.emit('message', 'A new user has joined!')
@@ -48,8 +48,7 @@ app.post('/change_state', (req, res) => {
 
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
-            "speech": "Light Turn On!!!",
-            "displayText": "Light Turn On"
+            "fulfillmentText": "Okay!!! Light Turn On!!!"
         }));
     } else {
         global.status = "OFF"
@@ -57,8 +56,7 @@ app.post('/change_state', (req, res) => {
 
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
-            "speech": "Light Turn Off!!!",
-            "displayText": "Light Turn Off"
+            "fulfillmentText": "Okay!!! Light Turn Off!!!"
         }));
     }
 })
